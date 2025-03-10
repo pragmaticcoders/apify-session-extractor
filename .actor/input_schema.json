@@ -1,0 +1,90 @@
+{
+  "title": "PuppeteerCrawler Template",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "signInPageURL": {
+      "title": "Sign-in page URL",
+      "description": "The website to get the session from. The login form should be available on the provided URL.",
+      "type": "string",
+      "editor": "textfield"
+    },
+    "steps": {
+      "title": "Steps",
+      "description": "The sequential steps to perform to get the session.",
+      "type": "array",
+      "editor": "json",
+      "prefill": [
+        {
+          "action": "type",
+          "selector": "#email",
+          "value": "..."
+        },
+        {
+          "action": "type",
+          "selector": "#password",
+          "value": "..."
+        },
+        {
+          "action": "click",
+          "selector": "#submit"
+        }
+      ]
+    },
+    "cookieDomains": {
+      "title": "Cookie domains",
+      "description": "Specify the domains that should get cookies from",
+      "example": ["domain.com", "subdomain.domain.com"],
+      "default": [],
+      "prefill": [],
+      "type": "array",
+      "editor": "stringList"
+    },
+    "gotoTimeout": {
+      "title": "Visit page timeout",
+      "description": "How many seconds until page.goto should wait",
+      "default": 30,
+      "prefill": 30,
+      "example": 30,
+      "type": "integer",
+      "editor": "number"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy configuration",
+      "type": "object",
+      "description": "Select proxies to be used by your actor.",
+      "prefill": {
+        "useApifyProxy": true
+      },
+      "editor": "proxy"
+    },
+    "forceCloud": {
+      "title": "Force cloud",
+      "description": "Use this when you execute the actor locally in your machine, but fills the session storage on the Apify platform",
+      "default": true,
+      "type": "boolean"
+    },
+    "userAgent": {
+      "title": "User-Agent",
+      "description": "Custom User-Agent string for browser emulation",
+      "type": "string",
+      "default": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36",
+      "editor": "textfield"
+    },
+    "headless": {
+      "title": "Headless mode",
+      "description": "Run browser in headless mode",
+      "default": false,
+      "type": "boolean"
+    },
+    "storageName": {
+      "title": "Sign-in page URL",
+      "description": "Apify storage name for the session data",
+      "type": "string",
+      "editor": "textfield",
+      "prefill": "SESSION_DATA",
+      "default": "SESSION_DATA"
+    }
+  },
+  "required": ["signInPageURL", "steps", "cookieDomains"]
+}

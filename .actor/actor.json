@@ -1,0 +1,12 @@
+{
+  "actorSpecification": 1,
+  "name": "session-extractor",
+  "title": "Session Extractor",
+  "description": "Automates login flows and extracts session data",
+  "version": "0.0",
+  "meta": {
+    "templateId": "ts-crawlee-puppeteer-chrome"
+  },
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile"
+}
