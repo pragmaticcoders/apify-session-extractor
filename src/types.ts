@@ -8,10 +8,11 @@ export interface InputSchema {
   userAgent?: string;
   headless?: boolean;
   storageName?: string;
+  totpSecret?: string;
 }
 
 export interface Step {
-  action: 'click' | 'type' | 'sleep';
+  action: 'click' | 'type' | 'sleep' | 'totp';
   selector?: string;
   value?: string | number;
   eq?: 'first' | 'last' | number;
@@ -23,4 +24,8 @@ export interface Step {
 export interface ProxyConfig {
   useApifyProxy?: boolean;
   apifyProxyGroups?: string[];
+}
+
+declare module 'totp-generator' {
+  export default function totp(secret: string): string;
 }

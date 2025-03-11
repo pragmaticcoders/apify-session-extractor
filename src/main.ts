@@ -1,6 +1,7 @@
 import { Actor } from 'apify';
 import puppeteer from 'puppeteer';
 import log from '@apify/log';
+import totp from 'totp-generator';
 import { DEFAULT_USER_AGENT, getElement, sleep, takeScreenshot } from './utils.js';
 import { InputSchema } from './types.js';
 
@@ -17,6 +18,7 @@ const {
   userAgent = DEFAULT_USER_AGENT,
   headless = false,
   storageName = 'SESSION_DATA',
+  totpSecret,
 } = input;
 
 log.info(`Launching Puppeteer...`);
@@ -80,6 +82,34 @@ try {
       log.info(`Typing into ${selector}`);
 
       await element.type(value.toString(), { delay: 50 });
+
+      if (pressEnter) {
+        log.info(`Pressing Enter`);
+        await element.press('Enter');
+      }
+
+      if (waitForNavigation) {
+        log.info(`Waiting for navigation`);
+        await page.waitForNavigation({ waitUntil: 'networkidle2' });
+      }
+
+      await sleep(1000);
+
+      continue;
+    }
+
+    if (action === 'totp') {
+      if (!totpSecret) throw new Error('TOTP action requires totpSecret to be set in input');
+      if (!selector) throw new Error('TOTP action requires a selector');
+
+      const element = await getElement(page, step);
+      const token = totp(totpSecret);
+
+      await takeScreenshot(page);
+
+      log.info(`Typing TOTP code into ${selector}`);
+
+      await element.type(token, { delay: 50 });
 
       if (pressEnter) {
         log.info(`Pressing Enter`);

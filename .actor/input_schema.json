@@ -78,12 +78,18 @@
       "type": "boolean"
     },
     "storageName": {
-      "title": "Sign-in page URL",
+      "title": "Storage name",
       "description": "Apify storage name for the session data",
       "type": "string",
       "editor": "textfield",
       "prefill": "SESSION_DATA",
       "default": "SESSION_DATA"
+    },
+    "totpSecret": {
+      "title": "TOTP Secret",
+      "description": "Secret key for generating TOTP codes (required for TOTP action)",
+      "type": "string",
+      "editor": "textfield"
     }
   },
   "required": ["signInPageURL", "steps", "cookieDomains"]
