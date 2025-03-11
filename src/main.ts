@@ -58,9 +58,9 @@ try {
     }
 
     if (action === 'click') {
-      const element = await getElement(page, step);
-
       await takeScreenshot(page);
+
+      const element = await getElement(page, step);
 
       log.info(`Clicking on ${selector}`);
 
@@ -75,9 +75,9 @@ try {
     if (action === 'type') {
       if (!value) throw new Error(`Typing requires a value`);
 
-      const element = await getElement(page, step);
-
       await takeScreenshot(page);
+
+      const element = await getElement(page, step);
 
       log.info(`Typing into ${selector}`);
 
@@ -102,10 +102,10 @@ try {
       if (!totpSecret) throw new Error('TOTP action requires totpSecret to be set in input');
       if (!selector) throw new Error('TOTP action requires a selector');
 
+      await takeScreenshot(page);
+
       const element = await getElement(page, step);
       const token = totp(totpSecret);
-
-      await takeScreenshot(page);
 
       log.info(`Typing TOTP code into ${selector}`);
 
@@ -128,7 +128,7 @@ try {
 
     throw new Error(`Unknown action: ${action}`);
   }
-  
+
   log.info(`All steps executed successfully`);
   await takeScreenshot(page);
 
@@ -159,6 +159,8 @@ try {
 
   log.info(`Session data saved!`);
 } catch (error) {
+  await takeScreenshot(page);
+
   if (error instanceof Error) {
     log.error(`Error: ${error.message}`);
   } else {
