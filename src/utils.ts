@@ -1,5 +1,5 @@
 import { Actor } from 'apify';
-import puppeteer from 'puppeteer';
+import { Page, ElementHandle } from 'puppeteer';
 import log from '@apify/log';
 import { Step } from './types.js';
 
@@ -8,7 +8,7 @@ export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, 
 export const DEFAULT_USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36';
 
-export const takeScreenshot = async (page: puppeteer.Page) => {
+export const takeScreenshot = async (page: Page) => {
   const timestamp = Date.now();
   const screenshotKey = `screenshot_${timestamp}.png`;
 
@@ -16,8 +16,7 @@ export const takeScreenshot = async (page: puppeteer.Page) => {
   await Actor.setValue(screenshotKey, screenshot, { contentType: 'image/png' });
 };
 
-
-export const getElement = async (page: puppeteer.Page, step: Step) => {
+export const getElement = async (page: Page, step: Step): Promise<ElementHandle> => {
   if (!step.selector) {
     throw new Error(`Selector missing for step: ${JSON.stringify(step.action)}`);
   }
@@ -51,4 +50,4 @@ export const getElement = async (page: puppeteer.Page, step: Step) => {
   }
   
   return elements[0];
-}
+};
