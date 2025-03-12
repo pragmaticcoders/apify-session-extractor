@@ -1,8 +1,8 @@
 import { Actor } from 'apify';
 import puppeteer from 'puppeteer';
 import log from '@apify/log';
-import totp from 'totp-generator';
-import { DEFAULT_USER_AGENT, getElement, sleep, takeScreenshot } from './utils.js';
+import { TOTP } from 'totp-generator';
+import { DEFAULT_USER_AGENT, generateTOTPToken, getElement, sleep, takeScreenshot } from './utils.js';
 import { InputSchema } from './types.js';
 
 await Actor.init();
@@ -105,11 +105,11 @@ try {
       await takeScreenshot(page);
 
       const element = await getElement(page, step);
-      const token = totp(totpSecret);
+      const totpCode = await generateTOTPToken(totpSecret);
 
-      log.info(`Typing TOTP code into ${selector}`);
+      log.info(`Typing TOTP code`);
 
-      await element.type(token, { delay: 50 });
+      await element.type(totpCode, { delay: 50 });
 
       if (pressEnter) {
         log.info(`Pressing Enter`);
