@@ -69,7 +69,9 @@ export interface InputSchema {
   // Secret key for TOTP code generation
   totpSecret?: string;
 }
+````
 
+```typescript
 export interface Step {
   // Action to perform: 'click', 'type', 'sleep', or 'totp'
   action: 'click' | 'type' | 'sleep' | 'totp';
