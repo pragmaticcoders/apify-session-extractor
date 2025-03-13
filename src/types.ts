@@ -19,6 +19,7 @@ export interface Step {
   visible?: boolean;
   pressEnter?: boolean;
   waitForNavigation?: boolean;
+  optional?: boolean;
 }
 
 export interface ProxyConfig {

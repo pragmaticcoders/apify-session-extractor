@@ -1,8 +1,13 @@
 import { Actor } from 'apify';
 import puppeteer from 'puppeteer';
 import log from '@apify/log';
-import { TOTP } from 'totp-generator';
-import { DEFAULT_USER_AGENT, generateTOTPToken, getElement, sleep, takeScreenshot } from './utils.js';
+import {
+  DEFAULT_USER_AGENT,
+  generateTOTPToken,
+  getElement,
+  sleep,
+  takeScreenshot,
+} from './utils.js';
 import { InputSchema } from './types.js';
 
 await Actor.init();
@@ -47,7 +52,7 @@ try {
   log.info(`Executing steps`);
 
   for (const step of steps) {
-    const { action, selector, value, pressEnter, waitForNavigation } = step;
+    const { action, selector, value, pressEnter, waitForNavigation, optional } = step;
 
     if (action === 'sleep') {
       const sleepTime = value as number;
@@ -55,6 +60,15 @@ try {
       await sleep(sleepTime);
 
       continue;
+    }
+
+    if (optional) {
+      try {
+        await getElement(page, step);
+      } catch (error) {
+        console.log(`Optional element not found, skipping step`);
+        continue;
+      }
     }
 
     if (action === 'click') {

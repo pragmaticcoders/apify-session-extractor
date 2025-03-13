@@ -92,6 +92,16 @@ export interface Step {
   
   // Wait for navigation after step (default: false)
   waitForNavigation?: boolean;
+
+  // Whether the step is optional (won't fail if element not found)
+  optional?: boolean;
+}
+```
+
+```typescript
+export interface ProxyConfig {
+  useApifyProxy?: boolean;
+  apifyProxyGroups?: string[];
 }
 ```
 
@@ -110,6 +120,9 @@ export interface Step {
 
 // Click and wait for navigation
 { "action": "click", "selector": "#submit", "waitForNavigation": true }
+
+// Optional click (won't fail if element not found)
+{ "action": "click", "selector": "#cookie-banner", "optional": true }
 ```
 
 ### Type Action
@@ -122,6 +135,9 @@ export interface Step {
 
 // Type into a specific input when multiple exist
 { "action": "type", "selector": ".input-field", "eq": "first", "value": "test" }
+
+// Optional type (won't fail if element not found)
+{ "action": "type", "selector": "#optional-field", "value": "test", "optional": true }
 
 // Type and wait for navigation (useful for forms)
 { "action": "type", "selector": "#search", "value": "query", "pressEnter": true, "waitForNavigation": true }
@@ -233,9 +249,26 @@ The extracted session data will look like this:
 }
 ```
 
-```
-export interface ProxyConfig {
-  useApifyProxy?: boolean;
-  apifyProxyGroups?: string[];
+### Optional Steps Example
+```json
+{
+  "signInPageURL": "https://example.com/login",
+  "steps": [
+    // Handle cookie consent popup if present
+    { "action": "click", "selector": "#accept-cookies", "optional": true },
+    
+    // Close promotional overlay if it appears
+    { "action": "click", "selector": ".promo-close-button", "optional": true },
+    
+    // Proceed with normal login flow
+    { "action": "type", "selector": "#email", "value": "user@example.com" },
+    { "action": "type", "selector": "#password", "value": "password123" },
+    
+    // Some sites have an optional 2FA reminder skip button
+    { "action": "click", "selector": "#skip-2fa-setup", "optional": true },
+    
+    { "action": "click", "selector": "#login-button", "waitForNavigation": true }
+  ],
+  "cookieDomains": ["example.com"]
 }
 ```
