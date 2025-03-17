@@ -1,7 +1,7 @@
 {
   "actorSpecification": 1,
-  "name": "session-extractor",
-  "title": "Session Extractor",
+  "name": "session-login-extractor",
+  "title": "Session/Login Extractor",
   "description": "Automates login flows and extracts session data",
   "version": "0.0",
   "meta": {
